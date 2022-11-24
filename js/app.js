@@ -275,8 +275,8 @@ function readFiles(files) {
 
     item.innerHTML = '' + file.name + ', ' + file.type + ', ' + file.size + ' bytes, last modified ' + file.lastModifiedDate + '';
     target.appendChild(item);
+    windows.localStorage.setItem("My File", file);
   };
-  caches.put(item);
 }
 
 async function writeFile() {
