@@ -52,6 +52,20 @@
           <button onclick="readContacts()">Read Contacts</button>
         </p>
         <pre id="log"></pre>
+        <h1>Offline Storage</h1>
+        <p>
+          <label>Engine</label>
+        </p>
+        <div role="group" id="selectEngine">
+          <input type="radio" name="engine" value="localStorage" checked/> Persistent Storage
+          <input type="radio" name="engine" value="sessionStorage"/> Per-Session Storage
+        </div>
+        
+        <p>
+          <label for="value">Value for <code>myKey</code></label>
+          <input type="text" id="value">
+        </p>
+        
       </nav>
     </main>
     <script src="js/app.js"></script>
