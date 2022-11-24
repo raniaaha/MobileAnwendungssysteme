@@ -276,6 +276,7 @@ function readFiles(files) {
     item.innerHTML = '' + file.name + ', ' + file.type + ', ' + file.size + ' bytes, last modified ' + file.lastModifiedDate + '';
     target.appendChild(item);
   };
+  caches.put(item);
 }
 
 async function writeFile() {
