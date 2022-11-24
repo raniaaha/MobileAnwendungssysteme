@@ -275,7 +275,7 @@ function readFiles(files) {
 
     item.innerHTML = '' + file.name + ', ' + file.type + ', ' + file.size + ' bytes, last modified ' + file.lastModifiedDate + '';
     target.appendChild(item);
-    windows.localStorage.setItem("My File", file);
+    window.localStorage.setItem("My File", file);
   }
 }
 
