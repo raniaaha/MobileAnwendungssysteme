@@ -198,133 +198,133 @@ function readContacts() {
     consoleLog('Contacts API not supported.');
   }
 }
-//offline storage
-if ('localStorage' in window || 'sessionStorage' in window) {
-  var selectedEngine;
+// //offline storage
+// if ('localStorage' in window || 'sessionStorage' in window) {
+//   var selectedEngine;
 
-  var logTarget = document.getElementById('target');
-  var valueInput = document.getElementById('value');
+//   var logTarget = document.getElementById('target');
+//   var valueInput = document.getElementById('value');
 
-  var reloadInputValue = function () {
-  console.log(selectedEngine, window[selectedEngine].getItem('myKey'))
-    valueInput.value = window[selectedEngine].getItem('myKey') || '';
-  }
+//   var reloadInputValue = function () {
+//   console.log(selectedEngine, window[selectedEngine].getItem('myKey'))
+//     valueInput.value = window[selectedEngine].getItem('myKey') || '';
+//   }
   
-  var selectEngine = function (engine) {
-    selectedEngine = engine;
-    reloadInputValue();
-  };
+//   var selectEngine = function (engine) {
+//     selectedEngine = engine;
+//     reloadInputValue();
+//   };
 
-  function handleChange(change) {
-    var timeBadge = new Date().toTimeString().split(' ')[0];
-    var newState = document.createElement('p');
-    newState.innerHTML = '' + timeBadge + ' ' + change + '.';
-    logTarget.appendChild(newState);
-  }
+//   function handleChange(change) {
+//     var timeBadge = new Date().toTimeString().split(' ')[0];
+//     var newState = document.createElement('p');
+//     newState.innerHTML = '' + timeBadge + ' ' + change + '.';
+//     logTarget.appendChild(newState);
+//   }
 
-  var radios = document.querySelectorAll('#selectEngine input');
-  for (var i = 0; i < radios.length; ++i) {
-    radios[i].addEventListener('change', function () {
-      selectEngine(this.value)
-    });
-  }
+//   var radios = document.querySelectorAll('#selectEngine input');
+//   for (var i = 0; i < radios.length; ++i) {
+//     radios[i].addEventListener('change', function () {
+//       selectEngine(this.value)
+//     });
+//   }
   
-  selectEngine('localStorage');
+//   selectEngine('localStorage');
 
-  valueInput.addEventListener('keyup', function () {
-    window[selectedEngine].setItem('myKey', this.value);
-  });
+//   valueInput.addEventListener('keyup', function () {
+//     window[selectedEngine].setItem('myKey', this.value);
+//   });
 
-  var onStorageChanged = function (change) {
-    var engine = change.storageArea === window.localStorage ? 'localStorage' : 'sessionStorage';
-    handleChange('External change in ' + engine + ': key ' + change.key + ' changed from ' + change.oldValue + ' to ' + change.newValue + '');
-    if (engine === selectedEngine) {
-      reloadInputValue();
-    }
-  }
+//   var onStorageChanged = function (change) {
+//     var engine = change.storageArea === window.localStorage ? 'localStorage' : 'sessionStorage';
+//     handleChange('External change in ' + engine + ': key ' + change.key + ' changed from ' + change.oldValue + ' to ' + change.newValue + '');
+//     if (engine === selectedEngine) {
+//       reloadInputValue();
+//     }
+//   }
 
-  window.addEventListener('storage', onStorageChanged);
-}
-function consoleLog(data) {
-  var logElement = document.getElementById('log');
-  logElement.innerHTML += data + '\n';
-}
-//file access
-function getReadFile(reader, i) {
-  return function () {
-    var li = document.querySelector('[data-idx="' + i + '"]');
+//   window.addEventListener('storage', onStorageChanged);
+// }
+// function consoleLog(data) {
+//   var logElement = document.getElementById('log');
+//   logElement.innerHTML += data + '\n';
+// }
+// //file access
+// function getReadFile(reader, i) {
+//   return function () {
+//     var li = document.querySelector('[data-idx="' + i + '"]');
 
-    li.innerHTML += 'File starts with "' + reader.result.substr(0, 25) + '"';
-  }
-}
+//     li.innerHTML += 'File starts with "' + reader.result.substr(0, 25) + '"';
+//   }
+// }
 
-function readFiles(files) {
-  document.getElementById('count').innerHTML = files.length;
+// function readFiles(files) {
+//   document.getElementById('count').innerHTML = files.length;
 
-  var target = document.getElementById('target');
-  target.innerHTML = '';
+//   var target = document.getElementById('target');
+//   target.innerHTML = '';
 
-  for (var i = 0; i < files.length; ++i) {
-    var item = document.createElement('li');
-    item.setAttribute('data-idx', i);
-    var file = files[i];
+//   for (var i = 0; i < files.length; ++i) {
+//     var item = document.createElement('li');
+//     item.setAttribute('data-idx', i);
+//     var file = files[i];
 
-    var reader = new FileReader();
-    reader.addEventListener('load', getReadFile(reader, i));
-    reader.readAsText(file);
+//     var reader = new FileReader();
+//     reader.addEventListener('load', getReadFile(reader, i));
+//     reader.readAsText(file);
 
-    item.innerHTML = '' + file.name + ', ' + file.type + ', ' + file.size + ' bytes, last modified ' + file.lastModifiedDate + '';
-    target.appendChild(item);
-    window.localStorage.setItem("My File", file);
-  }
-}
+//     item.innerHTML = '' + file.name + ', ' + file.type + ', ' + file.size + ' bytes, last modified ' + file.lastModifiedDate + '';
+//     target.appendChild(item);
+//     window.localStorage.setItem("My File", file);
+//   }
+// }
 
-async function writeFile() {
-  if (!window.chooseFileSystemEntries) {
-    alert('Native File System API not supported');
-    return;
-  }
+// async function writeFile() {
+//   if (!window.chooseFileSystemEntries) {
+//     alert('Native File System API not supported');
+//     return;
+//   }
   
-  const target = document.getElementById('target');
-  target.innerHTML = 'Opening file handle...';
+//   const target = document.getElementById('target');
+//   target.innerHTML = 'Opening file handle...';
   
-  const handle = await window.chooseFileSystemEntries({
-    type: 'save-file',
-  });
+//   const handle = await window.chooseFileSystemEntries({
+//     type: 'save-file',
+//   });
   
-  const file = await handle.getFile()
-  const writer = await handle.createWriter();
-  await writer.write(0, 'Hello world from What Web Can Do!');
-  await writer.close()
+//   const file = await handle.getFile()
+//   const writer = await handle.createWriter();
+//   await writer.write(0, 'Hello world from What Web Can Do!');
+//   await writer.close()
   
-  target.innerHTML = 'Test content written to ' + file.name + '.';
-}
-//storage quotas
-if ('storage' in navigator && 'estimate' in navigator.storage) {
-  navigator.storage.estimate()
-    .then(estimate => {
-      document.getElementById('usage').innerHTML = estimate.usage;
-      document.getElementById('quota').innerHTML = estimate.quota;
-      document.getElementById('percent').innerHTML = (estimate.usage * 100 / estimate.quota).toFixed(0);
-    });
-}
+//   target.innerHTML = 'Test content written to ' + file.name + '.';
+// }
+// //storage quotas
+// if ('storage' in navigator && 'estimate' in navigator.storage) {
+//   navigator.storage.estimate()
+//     .then(estimate => {
+//       document.getElementById('usage').innerHTML = estimate.usage;
+//       document.getElementById('quota').innerHTML = estimate.quota;
+//       document.getElementById('percent').innerHTML = (estimate.usage * 100 / estimate.quota).toFixed(0);
+//     });
+// }
 
-if ('storage' in navigator && 'persisted' in navigator.storage) {
-  navigator.storage.persisted()
-    .then(persisted => {
-      document.getElementById('persisted').innerHTML = persisted ? 'persisted' : 'not persisted';
-    });
-}
+// if ('storage' in navigator && 'persisted' in navigator.storage) {
+//   navigator.storage.persisted()
+//     .then(persisted => {
+//       document.getElementById('persisted').innerHTML = persisted ? 'persisted' : 'not persisted';
+//     });
+// }
 
-function requestPersistence() {
-  if ('storage' in navigator && 'persist' in navigator.storage) {
-    navigator.storage.persist()
-      .then(persisted => {
-        document.getElementById('persisted').innerHTML = persisted ? 'persisted' : 'not persisted';
-      });
-  }
-}
-//native behavior
+// function requestPersistence() {
+//   if ('storage' in navigator && 'persist' in navigator.storage) {
+//     navigator.storage.persist()
+//       .then(persisted => {
+//         document.getElementById('persisted').innerHTML = persisted ? 'persisted' : 'not persisted';
+//       });
+//   }
+// }
+//Local Notification
 var $status = document.getElementById('status');
 
 if ('Notification' in window) {
@@ -369,73 +369,73 @@ function persistentNotification() {
     alert('Notification API error: ' + err);
   }
 }
-//Permission
-if ('permissions' in navigator) {
-  var logTarget = document.getElementById('logTarget');
+// //Permission
+// if ('permissions' in navigator) {
+//   var logTarget = document.getElementById('logTarget');
 
-  function handleChange(permissionName, newState) {
-    var timeBadge = new Date().toTimeString().split(' ')[0];
-    var newStateInfo = document.createElement('p');
-    newStateInfo.innerHTML = '' + timeBadge + ' State of ' + permissionName + ' permission status changed to ' + newState + '.';
-    logTarget.appendChild(newStateInfo);
-  }
+//   function handleChange(permissionName, newState) {
+//     var timeBadge = new Date().toTimeString().split(' ')[0];
+//     var newStateInfo = document.createElement('p');
+//     newStateInfo.innerHTML = '' + timeBadge + ' State of ' + permissionName + ' permission status changed to ' + newState + '.';
+//     logTarget.appendChild(newStateInfo);
+//   }
 
-  function checkPermission(permissionName, descriptor) {
-    try {
-    navigator.permissions.query(Object.assign({name: permissionName}, descriptor))
-      .then(function (permission) {
-        document.getElementById(permissionName + '-status').innerHTML = permission.state;
-        permission.addEventListener('change', function (e) {
-          document.getElementById(permissionName + '-status').innerHTML = permission.state;
-          handleChange(permissionName, permission.state);
-        });
-      });
-    } catch (e) {
-    }
-  }
+//   function checkPermission(permissionName, descriptor) {
+//     try {
+//     navigator.permissions.query(Object.assign({name: permissionName}, descriptor))
+//       .then(function (permission) {
+//         document.getElementById(permissionName + '-status').innerHTML = permission.state;
+//         permission.addEventListener('change', function (e) {
+//           document.getElementById(permissionName + '-status').innerHTML = permission.state;
+//           handleChange(permissionName, permission.state);
+//         });
+//       });
+//     } catch (e) {
+//     }
+//   }
 
-  checkPermission('geolocation');
-  checkPermission('notifications');
-  checkPermission('push', {userVisibleOnly: true});
-  checkPermission('midi', {sysex: true});
-  checkPermission('camera');
-  checkPermission('microphone');
-  checkPermission('background-sync');
-  checkPermission('ambient-light-sensor');
-  checkPermission('accelerometer');
-  checkPermission('gyroscope');
-  checkPermission('magnetometer');
+//   checkPermission('geolocation');
+//   checkPermission('notifications');
+//   checkPermission('push', {userVisibleOnly: true});
+//   checkPermission('midi', {sysex: true});
+//   checkPermission('camera');
+//   checkPermission('microphone');
+//   checkPermission('background-sync');
+//   checkPermission('ambient-light-sensor');
+//   checkPermission('accelerometer');
+//   checkPermission('gyroscope');
+//   checkPermission('magnetometer');
 
-  var noop = function () {};
-  navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+//   var noop = function () {};
+//   navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
   
-  function requestGeolocation() {
-    navigator.geolocation.getCurrentPosition(noop);
-  }
+//   function requestGeolocation() {
+//     navigator.geolocation.getCurrentPosition(noop);
+//   }
 
-  function requestNotifications() {
-    Notification.requestPermission();
-  }
+//   function requestNotifications() {
+//     Notification.requestPermission();
+//   }
 
-  function requestPush() {
-    navigator.serviceWorker.getRegistration()
-      .then(function (serviceWorkerRegistration) {
-        serviceWorkerRegistration.pushManager.subscribe();
-      });
-  }
+//   function requestPush() {
+//     navigator.serviceWorker.getRegistration()
+//       .then(function (serviceWorkerRegistration) {
+//         serviceWorkerRegistration.pushManager.subscribe();
+//       });
+//   }
 
-  function requestMidi() {
-    navigator.requestMIDIAccess({sysex: true});
-  }
+//   function requestMidi() {
+//     navigator.requestMIDIAccess({sysex: true});
+//   }
   
-  function requestCamera() {
-    navigator.getUserMedia({video: true}, noop, noop)
-  }
+//   function requestCamera() {
+//     navigator.getUserMedia({video: true}, noop, noop)
+//   }
   
-  function requestMicrophone() {
-    navigator.getUserMedia({audio: true}, noop, noop)
-  }
-}
+//   function requestMicrophone() {
+//     navigator.getUserMedia({audio: true}, noop, noop)
+//   }
+// }
 //Service Worker
 //
 if ("serviceWorker" in navigator) {
